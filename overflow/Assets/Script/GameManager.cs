@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject RestartButton;
     public GameObject BackButton;
     public GameManager Backtomenubutton;
+    public Text Highscoredisplaytext;
     public Text ScoreText;
     public GameObject Levelup;
     public GameObject ball;
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
         ScoreText.text = "" + score;
         InvokeRepeating("instantiatee", 1f, delay);
         HighScore = PlayerPrefs.GetInt("HighScore");
+        Highscoredisplaytext.text = "" + HighScore;
     }
     public void instantiatee()
     {
