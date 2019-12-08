@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     int score = 0;
     public float delay = 0.7f;
     public float bounce=0.6f;
-    int k;
     int HighScore = 0;
     public int countertimes=0;
     public Rigidbody2D rb;
@@ -31,7 +30,7 @@ public class GameManager : MonoBehaviour
         ScoreText.text = "" + score;
         InvokeRepeating("instantiatee", 1f, delay);
         HighScore = PlayerPrefs.GetInt("HighScore");
-        Highscoredisplaytext.text = "" + HighScore;
+        Highscoredisplaytext.text = "H=" + HighScore;
     }
     public void instantiatee()
     {
@@ -73,29 +72,25 @@ public class GameManager : MonoBehaviour
                     {
                         Debug.Log("increased bounce=" + bounce);
                         delay = 0.8f;
-
                     }
                 }
             }
-            if(score!=0 && score%14==0)
+            if(score!=0 && score%20==0)
             { countertimes++; }
-            if (k == 0)
-            {
-                if (score > PlayerPrefs.GetInt("Highscore",HighScore))
-                {
-                    k = 1;
-                    HighScore = score;
-                    PlayerPrefs.SetInt("HighScore", score);
-                    DisplayHighScore();
-                    Invoke("RemoveDisplayHighScore", 1.5f);
-                }
-            }
-            if (k == 1)
-            {
-                PlayerPrefs.SetInt("Highscore", score);
-            }
             score++;
             Debug.Log("score=" + score);
+            PlayerPrefs.SetInt("score", score);
+            if(PlayerPrefs.HasKey("HighScore"))
+            {
+                if(score>PlayerPrefs.GetInt("HighScore"))
+                {
+                    PlayerPrefs.SetInt("HighScore", score);
+                }
+            }
+            else
+            {
+                PlayerPrefs.SetInt("HighScore", score);
+            }
             ScoreText.text = "" + score;
         }
     }
@@ -122,7 +117,6 @@ public class GameManager : MonoBehaviour
     public void Restart()
     {
         countertimes = 0;
-        k = 0;
         bounce = 0.6f;
         GameEndsBitch = false;
         SceneManager.LoadScene("Game");
@@ -131,14 +125,12 @@ public class GameManager : MonoBehaviour
     {
         countertimes = 0;
         bounce = 0.6f;
-        k = 0;
         GameEndsBitch = false;
         SceneManager.LoadScene("Menu");
     }
     public void GameHasEnded()
     {
         countertimes = 0;
-        k = 0;
         GameEndsBitch = true;
         CancelInvoke("instantiatee");
         LooseText.SetActive(true);
