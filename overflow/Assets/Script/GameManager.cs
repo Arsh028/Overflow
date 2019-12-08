@@ -22,18 +22,22 @@ public class GameManager : MonoBehaviour
     public float bounce=0.6f;
     int k;
     int HighScore = 0;
+    public int countertimes=0;
     public Rigidbody2D rb;
     public PhysicsMaterial2D bouncy;
     public void Start()
     {
         ScoreText.text = "" + score;
-        InvokeRepeating("instantiatee", 2f, delay);
+        InvokeRepeating("instantiatee", 1f, delay);
         HighScore = PlayerPrefs.GetInt("HighScore");
     }
     public void instantiatee()
     {
         var RandomPos = new Vector2(Random.Range(-6.24f, 6.24f), Random.Range(-10.6f, 9.5f));
-        Instantiate(ball, RandomPos, Quaternion.identity);
+        for(int t=0;t<=countertimes;t++)
+        {
+            Instantiate(ball, RandomPos, Quaternion.identity);
+        }
     }
     public void ScoreUp()
     {
@@ -46,7 +50,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("delay decreased");
                     Levelup.SetActive(true);
                     Mathf.Round(delay);
-                    delay -= 0.02f;
+                    delay -= 0.04f;
                     Invoke("removeLevelup", 0.6f);
                     delaydecreasedtext.SetActive(true);
                     Invoke("removedelaydecreasedtext", 0.7f); 
@@ -71,6 +75,8 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+            if(score!=0 && score%14==0)
+            { countertimes++; }
             if (k == 0)
             {
                 if (score > PlayerPrefs.GetInt("Highscore",HighScore))
@@ -113,6 +119,7 @@ public class GameManager : MonoBehaviour
     }
     public void Restart()
     {
+        countertimes = 0;
         k = 0;
         bounce = 0.6f;
         GameEndsBitch = false;
@@ -120,12 +127,15 @@ public class GameManager : MonoBehaviour
     }
     public void Back()
     {
+        countertimes = 0;
         bounce = 0.6f;
         k = 0;
+        GameEndsBitch = false;
         SceneManager.LoadScene("Menu");
     }
     public void GameHasEnded()
     {
+        countertimes = 0;
         k = 0;
         GameEndsBitch = true;
         CancelInvoke("instantiatee");
