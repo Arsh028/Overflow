@@ -1166,7 +1166,7 @@ MonoBehaviour:
   LooseText: {fileID: 93844943}
   Bounceincreasedtext: {fileID: 957589407}
   delaydecreasedtext: {fileID: 517257476}
-  delay: 0.7
+  delay: 0.4
   bounce: 0.7
   countertimes: 0
   rb: {fileID: 3856942224206355976, guid: d1533b2a3efa91e44adce2399e8aa9fe, type: 3}
